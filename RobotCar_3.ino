@@ -39,7 +39,7 @@ void setup()
     
      mp3_play_track(17);  // 17. Bíll í gang (gamli bíllinn)
      delay(5000); 
-     mp3_play_track(1);     // 1. Riding along in my automobile 
+     mp3_play_track(2);     // 1. Riding along in my automobile 
      lagNr=2;
      //Timar
      time=millis();         //Setur time breytuna á tíma liðinn frá starti
@@ -62,17 +62,27 @@ void loop()
       mp3_play_track(lagNr++);   
     }
 
-   while(lengd()<50)
+   while(lengd()<40)
    {  
-      stopCar();  
-            
-      if(randomTurn==1)
-         driveRight(); // bíll snýst til hægri
-      else if (randomTurn==-1)
-         driveLeft();  // bíll snýst til binstri
-      delay(300);      // Gefa tíma til að beygja ca +/- 90°
-      startCar();  
-      randomTurn=randomTurn*-1;    
-      delay(1000);                
+      stopCar();
+      mp3_play_track(18);
+      reiknaPulsBreidd(85, -1);
+      int left = lengd();
+      delay(1000);
+      reiknaPulsBreidd(-85, -1);
+      int right = lengd();
+      delay(1000);
+      reiknaPulsBreidd(0, -1);      
+      delay(1000);
+      Serial.println(left);
+      Serial.println(right);
+      if (left > right) {
+          driveLeft();
+        } else {
+          driveRight();
+        }
+      delay(500);    
+      startCar();
+      mp3_play_track(2);
    }
 }//End of loop *********************
